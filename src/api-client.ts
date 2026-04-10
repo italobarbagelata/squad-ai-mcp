@@ -1,13 +1,20 @@
-// Cliente HTTP con JWT y refresh automático para el squad-ai-app backend
+// HTTP client with JWT auth for the squad-ai-app backend.
+// Supports two auth modes:
+//   1. SQUAD_TOKEN (direct JWT) — used when OpenCode passes the user's token
+//   2. SQUAD_EMAIL + SQUAD_PASSWORD — fallback login
 
-const API_URL = process.env.SQUAD_API_URL ?? "http://localhost:8001";
+const API_URL = process.env.SQUAD_API_URL ?? "http://localhost:8000";
+const DIRECT_TOKEN = process.env.SQUAD_TOKEN ?? "";
 const EMAIL = process.env.SQUAD_EMAIL ?? "";
 const PASSWORD = process.env.SQUAD_PASSWORD ?? "";
 
-let accessToken: string | null = null;
+let accessToken: string | null = DIRECT_TOKEN || null;
 let refreshToken: string | null = null;
 
 async function login(): Promise<void> {
+  if (!EMAIL || !PASSWORD) {
+    throw new Error("No auth configured: set SQUAD_TOKEN or SQUAD_EMAIL + SQUAD_PASSWORD");
+  }
   const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
