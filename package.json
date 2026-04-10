@@ -1,0 +1,19 @@
+{
+  "name": "squad-ai-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server para Squad AI App — permite a Claude Code ejecutar tareas localmente",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.5.0"
+  }
+}
